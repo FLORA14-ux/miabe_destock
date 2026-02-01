@@ -1,6 +1,6 @@
 // lib/mainNavigation.dart
 import 'package:flutter/material.dart';
-import 'vendeurs/accueil.dart';
+import 'vendeurs/dashboard.dart';
 import 'vendeurs/profil.dart';
 import 'acheteurs/accueil.dart';
 import 'acheteurs/profil.dart';
@@ -21,12 +21,12 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _acheteurPages = [
     const AccueilPage(),
-    const ProfilPage(), 
+    const ProfilVendeur(), 
   ];
 
   final List<Widget> _vendeurPages = [
-    const AccueilVendeurPage(), 
-    const ProfilVendeurPage(), 
+    const DashboardVendeur(), 
+    const ProfilVendeur(), 
   ];
 
   @override

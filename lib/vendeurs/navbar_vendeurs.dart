@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'accueil.dart';
+import 'dashboard.dart';
 import 'profil.dart';
 
 class NavBarVendeur extends StatefulWidget {
@@ -17,6 +17,12 @@ class NavBarVendeur extends StatefulWidget {
 }
 
 class _NavBarVendeurState extends State<NavBarVendeur> {
+  // Liste des pages pour la navigation
+  final List<Widget> pages = [
+    const DashboardVendeur(), // Remplace AccueilVendeur par DashboardVendeur
+    const ProfilVendeur(),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -31,7 +37,7 @@ class _NavBarVendeurState extends State<NavBarVendeur> {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Accueil',
+          label: 'Dashboard', 
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
