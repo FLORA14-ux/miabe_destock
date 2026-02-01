@@ -1,11 +1,11 @@
-// lib/mainNavigation.dart
+
 import 'package:flutter/material.dart';
 import 'vendeurs/dashboard.dart';
 import 'vendeurs/profil.dart';
-import 'acheteurs/accueil.dart';
-import 'acheteurs/profil.dart';
 import 'vendeurs/navbar_vendeurs.dart';
 import 'acheteurs/navbar_acheteurs.dart';
+import 'acheteurs/accueil.dart';
+import 'acheteurs/profil.dart';
 
 class MainNavigation extends StatefulWidget {
   final bool isVendeur;
@@ -21,7 +21,7 @@ class _MainNavigationState extends State<MainNavigation> {
 
   final List<Widget> _acheteurPages = [
     const AccueilPage(),
-    const ProfilVendeur(), 
+    const ProfilAcheteur(), 
   ];
 
   final List<Widget> _vendeurPages = [
