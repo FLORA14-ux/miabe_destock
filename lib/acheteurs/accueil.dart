@@ -137,6 +137,24 @@ class _AccueilPageState extends State<AccueilPage> {
     );
   }
 
+  // Fonction pour raccourcir les noms de catégories
+  String _getCategoryShortName(String category) {
+    switch (category) {
+      case 'ELECTRONIQUE_INFORMATIQUE':
+        return 'Électronique';
+      case 'ELECTROMENAGER':
+        return 'Électroménager';
+      case 'MEUBLE_DECORATION':
+        return 'Meuble & Déco';
+      case 'VEHICULE':
+        return 'Véhicule';
+      case 'ACCESSOIRE':
+        return 'Accessoire';
+      default:
+        return category;
+    }
+  }
+
   Widget _buildDetailsModal(Article article) {
     return DraggableScrollableSheet(
       initialChildSize: 0.9,
@@ -612,6 +630,174 @@ class _AccueilPageState extends State<AccueilPage> {
         etat: 'neuf',
         datePublication: DateTime(2026, 1, 25),
       ),
+      Article(
+        id: '7',
+        titre: 'TV Samsung 55 pouces 4K',
+        description: 'Téléviseur Smart TV 4K HDR, presque neuf. Vendu avec support mural.',
+        prix: 320000,
+        categorie: 'ELECTRONIQUE_INFORMATIQUE',
+        images: [
+          'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=600&fit=crop',
+        ],
+        vendeurNom: 'Ibrahim Sow',
+        ville: 'Lomé',
+        etat: 'très bon',
+        datePublication: DateTime(2026, 1, 24),
+      ),
+      Article(
+        id: '8',
+        titre: 'Four à micro-ondes LG',
+        description: 'Micro-ondes 25L, fonction grill. État impeccable, utilisé seulement 1 an.',
+        prix: 45000,
+        categorie: 'ELECTROMENAGER',
+        images: [
+          'https://images.unsplash.com/photo-1585659722983-3a675dabf23d?w=600&fit=crop',
+        ],
+        vendeurNom: 'Fatou Diallo',
+        ville: 'Lomé, Togo',
+        etat: 'bon',
+        datePublication: DateTime(2026, 1, 23),
+      ),
+      Article(
+        id: '9',
+        titre: 'Vélo VTT Scott 26 pouces',
+        description: 'VTT en excellent état, 21 vitesses. Idéal pour randonnées et déplacements.',
+        prix: 125000,
+        categorie: 'VEHICULE',
+        images: [
+          'https://images.unsplash.com/photo-1576435728678-68d0fbf94e91?w=600&fit=crop',
+        ],
+        vendeurNom: 'Marc Kouassi',
+        ville: 'Lomé',
+        etat: 'très bon',
+        datePublication: DateTime(2026, 1, 21),
+      ),
+      Article(
+        id: '10',
+        titre: 'Table à manger 6 places',
+        description: 'Table en bois massif avec 6 chaises. Design moderne, parfait état.',
+        prix: 150000,
+        categorie: 'MEUBLE_DECORATION',
+        images: [
+          'https://images.unsplash.com/photo-1617806118233-18e1de247200?w=600&fit=crop',
+        ],
+        vendeurNom: 'Ama Togo',
+        ville: 'Lomé, Togo',
+        etat: 'bon',
+        datePublication: DateTime(2026, 1, 20),
+      ),
+      Article(
+        id: '11',
+        titre: 'Climatiseur Split 12000 BTU',
+        description: 'Climatiseur silencieux, très économique. Installation incluse.',
+        prix: 180000,
+        categorie: 'ELECTROMENAGER',
+        images: [
+          'https://images.unsplash.com/photo-1631545806609-41a01e3c6d3e?w=600&fit=crop',
+        ],
+        vendeurNom: 'Kwame Adjovi',
+        ville: 'Lomé',
+        etat: 'neuf',
+        datePublication: DateTime(2026, 1, 19),
+      ),
+      Article(
+        id: '12',
+        titre: 'PlayStation 5 + 2 manettes',
+        description: 'PS5 version disque avec 2 manettes et 3 jeux inclus. Garantie 6 mois restants.',
+        prix: 420000,
+        categorie: 'ELECTRONIQUE_INFORMATIQUE',
+        images: [
+          'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?w=600&fit=crop',
+        ],
+        vendeurNom: 'David Mensah',
+        ville: 'Lomé, Togo',
+        etat: 'très bon',
+        datePublication: DateTime(2026, 1, 26),
+      ),
+      Article(
+        id: '13',
+        titre: 'Sac à main Gucci',
+        description: 'Sac à main authentique Gucci, utilisé 2 fois seulement. Avec certificat.',
+        prix: 350000,
+        categorie: 'ACCESSOIRE',
+        images: [
+          'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&fit=crop',
+        ],
+        vendeurNom: 'Élise Koffi',
+        ville: 'Lomé',
+        etat: 'neuf',
+        datePublication: DateTime(2026, 1, 27),
+      ),
+      Article(
+        id: '14',
+        titre: 'Scooter électrique Xiaomi',
+        description: 'Scooter électrique 25km/h, autonomie 30km. Parfait pour la ville.',
+        prix: 220000,
+        categorie: 'VEHICULE',
+        images: [
+          'https://images.unsplash.com/photo-1598799779753-100d45a78e28?w=600&fit=crop',
+        ],
+        vendeurNom: 'Pierre Atsu',
+        ville: 'Lomé, Togo',
+        etat: 'bon',
+        datePublication: DateTime(2026, 1, 17),
+      ),
+      Article(
+        id: '15',
+        titre: 'Lit Queen Size avec matelas',
+        description: 'Lit moderne avec matelas orthopédique. Très confortable, 2 ans d\'utilisation.',
+        prix: 200000,
+        categorie: 'MEUBLE_DECORATION',
+        images: [
+          'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&fit=crop',
+        ],
+        vendeurNom: 'Justine Ablodé',
+        ville: 'Lomé',
+        etat: 'bon',
+        datePublication: DateTime(2026, 1, 16),
+      ),
+      Article(
+        id: '16',
+        titre: 'Machine à laver Bosch 7kg',
+        description: 'Lave-linge automatique 7kg, plusieurs programmes. Fonctionne parfaitement.',
+        prix: 140000,
+        categorie: 'ELECTROMENAGER',
+        images: [
+          'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=600&fit=crop',
+        ],
+        vendeurNom: 'Kodjo Sename',
+        ville: 'Lomé, Togo',
+        etat: 'bon',
+        datePublication: DateTime(2026, 1, 14),
+      ),
+      Article(
+        id: '17',
+        titre: 'iPad Air 2022 64GB',
+        description: 'iPad Air dernière génération, avec Apple Pencil et clavier. Comme neuf.',
+        prix: 380000,
+        categorie: 'ELECTRONIQUE_INFORMATIQUE',
+        images: [
+          'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=600&fit=crop',
+        ],
+        vendeurNom: 'Sarah Dotse',
+        ville: 'Lomé',
+        etat: 'très bon',
+        datePublication: DateTime(2026, 1, 28),
+      ),
+      Article(
+        id: '18',
+        titre: 'Baskets Nike Air Max',
+        description: 'Sneakers Nike Air Max neuves, taille 42. Jamais portées, encore dans la boîte.',
+        prix: 55000,
+        categorie: 'ACCESSOIRE',
+        images: [
+          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&fit=crop',
+        ],
+        vendeurNom: 'Kevin Agbeko',
+        ville: 'Lomé, Togo',
+        etat: 'neuf',
+        datePublication: DateTime(2026, 1, 29),
+      ),
     ];
 
     if (_selectedCategoryPath != 'all') {
@@ -624,63 +810,41 @@ class _AccueilPageState extends State<AccueilPage> {
   Widget _buildFooter() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.grey[50],
+        color: Colors.grey[100],
         border: Border(
-          top: BorderSide(color: Colors.grey[200]!, width: 1),
+          top: BorderSide(color: Colors.grey[300]!, width: 1),
         ),
       ),
       child: Column(
         children: [
-          // Logo
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFF7C3AED).withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: const Icon(
-              Icons.shopping_bag,
-              color: Color(0xFF7C3AED),
-              size: 32,
-            ),
-          ),
-          const SizedBox(height: 12),
-          const Text(
-            'MIABE DESTOCK',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF7C3AED),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.shopping_bag,
+                color: Color(0xFF7C3AED),
+                size: 20,
+              ),
+              const SizedBox(width: 8),
+              const Text(
+                'MIABE DESTOCK',
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF7C3AED),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 8),
           Text(
             '© ${DateTime.now().year} Tous droits réservés',
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 11,
               color: Colors.grey[600],
             ),
-          ),
-          const SizedBox(height: 16),
-          // Liens sociaux
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.facebook, color: Colors.grey[600]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.phone, color: Colors.grey[600]),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.email, color: Colors.grey[600]),
-              ),
-            ],
           ),
         ],
       ),
@@ -851,7 +1015,7 @@ class _AccueilPageState extends State<AccueilPage> {
                       sliver: SliverGrid(
                         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
-                          childAspectRatio: 0.7,
+                          childAspectRatio: 0.65, // ← Réduit pour donner plus d'espace
                           crossAxisSpacing: 12,
                           mainAxisSpacing: 12,
                         ),
@@ -878,17 +1042,17 @@ class _AccueilPageState extends State<AccueilPage> {
                                           child: article.imagePrincipale.isNotEmpty
                                               ? Image.network(
                                                   article.imagePrincipale,
-                                                  height: 130,
+                                                  height: 120, // ← Réduit de 130 à 120
                                                   width: double.infinity,
                                                   fit: BoxFit.cover,
                                                   errorBuilder: (_, __, ___) => Container(
-                                                    height: 130,
+                                                    height: 120,
                                                     color: Colors.grey[300],
                                                     child: const Icon(Icons.image, size: 50),
                                                   ),
                                                 )
                                               : Container(
-                                                  height: 130,
+                                                  height: 120,
                                                   color: Colors.grey[300],
                                                   child: const Icon(Icons.image, size: 50),
                                                 ),
@@ -936,6 +1100,17 @@ class _AccueilPageState extends State<AccueilPage> {
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                           const SizedBox(height: 4),
+                                          // Description courte (3 lignes au lieu de 2)
+                                          Text(
+                                            article.description,
+                                            style: TextStyle(
+                                              color: Colors.grey[600],
+                                              fontSize: 11,
+                                            ),
+                                            maxLines: 3, // ← Augmenté à 3 lignes
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          const SizedBox(height: 6),
                                           Text(
                                             article.prixFormate,
                                             style: const TextStyle(
@@ -944,21 +1119,22 @@ class _AccueilPageState extends State<AccueilPage> {
                                               fontSize: 16,
                                             ),
                                           ),
-                                          if (article.ville != null) ...[
-                                            const SizedBox(height: 4),
-                                            Row(
-                                              children: [
-                                                const Icon(
+                                          const SizedBox(height: 6),
+                                          // Ville et catégorie sur la même ligne
+                                          Row(
+                                            children: [
+                                              if (article.ville != null) ...[
+                                                Icon(
                                                   Icons.location_on,
                                                   size: 12,
-                                                  color: Colors.grey,
+                                                  color: Colors.grey[600],
                                                 ),
                                                 const SizedBox(width: 4),
                                                 Expanded(
                                                   child: Text(
                                                     article.ville!,
-                                                    style: const TextStyle(
-                                                      color: Colors.grey,
+                                                    style: TextStyle(
+                                                      color: Colors.grey[600],
                                                       fontSize: 11,
                                                     ),
                                                     maxLines: 1,
@@ -966,8 +1142,28 @@ class _AccueilPageState extends State<AccueilPage> {
                                                   ),
                                                 ),
                                               ],
+                                            ],
+                                          ),
+                                          const SizedBox(height: 4),
+                                          // Catégorie en bas
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 8,
+                                              vertical: 4,
                                             ),
-                                          ],
+                                            decoration: BoxDecoration(
+                                              color: const Color(0xFF7C3AED).withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(6),
+                                            ),
+                                            child: Text(
+                                              _getCategoryShortName(article.categorie),
+                                              style: const TextStyle(
+                                                color: Color(0xFF7C3AED),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       ),
                                     ),
