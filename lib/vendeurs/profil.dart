@@ -1,362 +1,518 @@
 import 'package:flutter/material.dart';
+import '../auth_page.dart';
 
 class ProfilVendeur extends StatefulWidget {
   const ProfilVendeur({Key? key}) : super(key: key);
 
   @override
-  _ProfilVendeurState createState() => _ProfilVendeurState();
+  State<ProfilVendeur> createState() => _ProfilVendeurState();
 }
 
 class _ProfilVendeurState extends State<ProfilVendeur> {
-  // Données du vendeur
-  final String nom = "Jean";
-  final String email = "flora@gmail.com";
-  final String role = "Vendeur";
-  final String telephone = "52222";
+  final Color primaryColor = const Color(0xFF7C3AED);
+  
+  // Informations du vendeur
+  String _userName = 'Kofi Mensah';
+  String _userPhone = '+228 90 12 34 56';
+  String _userEmail = 'kofi.mensah@email.com';
+  String _shopName = 'Boutique Kofi';
+  String _ville = 'Lomé, Togo';
   
   // Statistiques
-  final int annoncesActives = 0;
-  final int annoncesVendues = 0;
+  int _totalVentes = 127;
+  double _revenuTotal = 12450000;
+  double _noteVendeur = 4.8;
+  int _avisTotal = 89;
+
+  Future<void> _deconnexion() async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Déconnexion'),
+        content: const Text('Êtes-vous sûr de vouloir vous déconnecter ?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('Annuler'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context); // Fermer dialog
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (_) => const AuthPage()),
+                (route) => false,
+              );
+            },
+            style: TextButton.styleFrom(foregroundColor: Colors.red),
+            child: const Text('Déconnexion'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  String _formatRevenu() {
+    final revenuString = _revenuTotal.toStringAsFixed(0);
+    String result = '';
+    int count = 0;
+    
+    for (int i = revenuString.length - 1; i >= 0; i--) {
+      result = revenuString[i] + result;
+      count++;
+      if (count == 3 && i != 0) {
+        result = ' $result';
+        count = 0;
+      }
+    }
+    
+    return '$result FCFA';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text(
-          'Mon Profil',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0.5,
-        centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(height: 30),
-              
-              // Photo de profil
-              Container(
-                width: 100,
-                height: 100,
+      backgroundColor: Colors.grey[50],
+      body: CustomScrollView(
+        slivers: [
+          // AppBar avec header
+          SliverAppBar(
+            expandedHeight: 280,
+            floating: false,
+            pinned: true,
+            backgroundColor: primaryColor,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.grey[200],
-                  border: Border.all(color: Colors.grey, width: 2),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      primaryColor,
+                      primaryColor.withOpacity(0.8),
+                    ],
+                  ),
                 ),
-                child: const Icon(
-                  Icons.person,
-                  size: 50,
-                  color: Colors.grey,
-                ),
-              ),
-              
-              const SizedBox(height: 20),
-              
-              // Nom
-              Text(
-                nom,
-                style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-              
-              const SizedBox(height: 8),
-              
-              // Email
-              Text(
-                email,
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey[600],
-                ),
-              ),
-              
-              const SizedBox(height: 4),
-              
-              // Badge Vendeur
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: Colors.green[50],
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.green[100]!),
-                ),
-                child: Text(
-                  role,
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.green[800],
-                    fontWeight: FontWeight.w500,
+                child: SafeArea(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 40),
+                      // Avatar avec badge vendeur
+                      Stack(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(color: Colors.white, width: 3),
+                            ),
+                            child: CircleAvatar(
+                              radius: 50,
+                              backgroundColor: Colors.white,
+                              child: Text(
+                                _userName.isNotEmpty ? _userName[0].toUpperCase() : 'V',
+                                style: TextStyle(
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 2),
+                              ),
+                              child: const Icon(
+                                Icons.storefront,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 12),
+                      
+                      // Nom
+                      Text(
+                        _userName,
+                        style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      
+                      // Nom de la boutique
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          _shopName,
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      
+                      // Note vendeur
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Icons.star, color: Colors.amber, size: 20),
+                          const SizedBox(width: 4),
+                          Text(
+                            '$_noteVendeur',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Text(
+                            ' ($_avisTotal avis)',
+                            style: TextStyle(
+                              color: Colors.white.withOpacity(0.8),
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-              
-              const SizedBox(height: 40),
-              
-              // Section Informations de contact
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: Colors.grey[50],
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  // TODO: Modifier profil
+                },
+                icon: const Icon(Icons.edit, color: Colors.white),
+              ),
+            ],
+          ),
+
+          // Contenu
+          SliverToBoxAdapter(
+            child: Column(
+              children: [
+                const SizedBox(height: 16),
+                
+                // Statistiques de vente
+                _buildStatistiquesVente(),
+                
+                const SizedBox(height: 16),
+                
+                // Informations du compte
+                _buildSection(
+                  title: 'Mes informations',
                   children: [
-                    const Text(
-                      'Informations de contact',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 20),
-                    
-                    _buildInfoRow(
+                    _buildInfoTile(
                       icon: Icons.phone,
-                      label: 'Téléphone',
-                      value: telephone,
+                      title: 'Téléphone',
+                      subtitle: _userPhone,
+                      onTap: () {},
                     ),
-                    
-                    const SizedBox(height: 16),
-                    
-                    _buildInfoRow(
+                    _buildInfoTile(
                       icon: Icons.email,
-                      label: 'Email',
-                      value: email,
+                      title: 'Email',
+                      subtitle: _userEmail,
+                      onTap: () {},
+                    ),
+                    _buildInfoTile(
+                      icon: Icons.location_on,
+                      title: 'Localisation',
+                      subtitle: _ville,
+                      onTap: () {},
                     ),
                   ],
                 ),
-              ),
-              
-              const SizedBox(height: 40),
-              
-              // Section Statistiques
-              const Text(
-                'Statistiques',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                
+                const SizedBox(height: 16),
+                
+                // Section Support
+                _buildSection(
+                  title: 'Support',
+                  children: [
+                    _buildMenuItem(
+                      icon: Icons.message,
+                      title: 'Messages',
+                      subtitle: 'Vos conversations avec les clients',
+                      color: Colors.purple,
+                      onTap: () {
+                        // TODO: Messages
+                      },
+                    ),
+                    _buildMenuItem(
+                      icon: Icons.help,
+                      title: 'Centre d\'aide',
+                      subtitle: 'FAQ et assistance',
+                      color: Colors.indigo,
+                      onTap: () {
+                        // TODO: Aide
+                      },
+                    ),
+                  ],
                 ),
-              ),
-              
-              const SizedBox(height: 20),
-              
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildStatCard(
-                    value: annoncesActives.toString(),
-                    label: 'Annonces Actives',
-                    icon: Icons.shopping_bag_outlined,
-                    color: Colors.blue,
-                  ),
-                  _buildStatCard(
-                    value: annoncesVendues.toString(),
-                    label: 'Vendues',
-                    icon: Icons.check_circle_outline,
-                    color: Colors.green,
-                  ),
-                ],
-              ),
-              
-              const SizedBox(height: 50),
-              
-              // Boutons d'actions
-              Column(
-                children: [
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Action pour modifier le profil
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: Colors.grey[300]!),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                
+                const SizedBox(height: 16),
+                
+                // Bouton déconnexion
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: _deconnexion,
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.red,
+                      side: const BorderSide(color: Colors.red),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
                       ),
-                      icon: const Icon(Icons.edit_outlined, size: 22),
-                      label: const Text(
-                        'Modifier mon profil',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
+                    ),
+                    icon: const Icon(Icons.logout),
+                    label: const Text(
+                      'Déconnexion',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
-                  
-                  const SizedBox(height: 16),
-                  
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        // Action pour se déconnecter
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red[50],
-                        foregroundColor: Colors.red,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: BorderSide(color: Colors.red[100]!),
-                        ),
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                      ),
-                      icon: const Icon(Icons.logout_outlined, size: 22),
-                      label: const Text(
-                        'Se déconnecter',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // Version
+                Text(
+                  'Version 1.0.0',
+                  style: TextStyle(
+                    color: Colors.grey[400],
+                    fontSize: 12,
                   ),
-                ],
-              ),
-              
-              const SizedBox(height: 40),
-            ],
+                ),
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
-  Widget _buildInfoRow({
-    required IconData icon,
-    required String label,
-    required String value,
-  }) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.1),
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: Icon(
-            icon,
-            size: 20,
-            color: Colors.grey[600],
-          ),
-        ),
-        const SizedBox(width: 15),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey[600],
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                value,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildStatCard({
-    required String value,
-    required String label,
-    required IconData icon,
-    required Color color,
-  }) {
+  Widget _buildStatistiquesVente() {
     return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       padding: const EdgeInsets.all(20),
-      width: MediaQuery.of(context).size.width * 0.4,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: const Offset(0, 4),
+            offset: const Offset(0, 2),
           ),
         ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              icon,
-              color: color,
-              size: 24,
+          const Text(
+            'Performance de vente',
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.shopping_cart,
+                  value: _totalVentes.toString(),
+                  label: 'Ventes',
+                  color: Colors.green,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: _buildStatCard(
+                  icon: Icons.monetization_on,
+                  value: _formatRevenu(),
+                  label: 'Revenu total',
+                  color: Colors.orange,
+                  isSmallText: true,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStatCard({
+    required IconData icon,
+    required String value,
+    required String label,
+    required Color color,
+    bool isSmallText = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: color, size: 24),
+          const SizedBox(height: 8),
           Text(
             value,
-            style: const TextStyle(
-              fontSize: 28,
+            style: TextStyle(
+              fontSize: isSmallText ? 14 : 20,
               fontWeight: FontWeight.bold,
-              color: Colors.black,
+              color: color,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 4),
           Text(
             label,
-            textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 12,
               color: Colors.grey[600],
-              fontWeight: FontWeight.w500,
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildSection({
+    required String title,
+    required List<Widget> children,
+  }) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          const Divider(height: 1),
+          ...children,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoTile({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: primaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Icon(icon, color: primaryColor, size: 20),
+      ),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 13,
+          color: Colors.grey[600],
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: Colors.black87,
+        ),
+      ),
+      trailing: const Icon(Icons.chevron_right, size: 20),
+      onTap: onTap,
+    );
+  }
+
+  Widget _buildMenuItem({
+    required IconData icon,
+    required String title,
+    required String subtitle,
+    required Color color,
+    required VoidCallback onTap,
+  }) {
+    return ListTile(
+      leading: Container(
+        padding: const EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Icon(icon, color: color, size: 22),
+      ),
+      title: Text(
+        title,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      subtitle: Text(
+        subtitle,
+        style: TextStyle(
+          fontSize: 12,
+          color: Colors.grey[600],
+        ),
+      ),
+      trailing: const Icon(Icons.chevron_right, size: 20),
+      onTap: onTap,
     );
   }
 }

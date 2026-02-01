@@ -1,11 +1,15 @@
 // lib/vendeurs/ajouter_article.dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart'; // À décommenter quand prêt
+// import 'package:image_picker/image_picker.dart'; // À décommenter quand prêt
 
 class AjouterArticle extends StatefulWidget {
-  const AjouterArticle({Key? key}) : super(key: key);
+  final dynamic articleAModifier; // ← Si null = ajout, sinon = modification
+  
+  const AjouterArticle({
+    Key? key,
+    this.articleAModifier, // Optionnel
+  }) : super(key: key);
 
   @override
   State<AjouterArticle> createState() => _AjouterArticleState();
@@ -16,16 +20,19 @@ class _AjouterArticleState extends State<AjouterArticle> {
   final Color primaryColor = const Color(0xFF7C3AED);
   
   // Controllers
-  final TextEditingController _titreController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _prixController = TextEditingController();
-  final TextEditingController _localisationController = TextEditingController();
+  late TextEditingController _titreController;
+  late TextEditingController _descriptionController;
+  late TextEditingController _prixController;
+  late TextEditingController _localisationController;
   
   // États
   String? _categorieSelectionnee;
   String? _etatSelectionne;
-  List<String> _images = []; // URLs ou paths des images
+  List<String> _images = [];
   bool _isLoading = false;
+  
+  // Mode édition ?
+  bool get _isEditMode => widget.articleAModifier != null;
   
   // Listes
   final List<Map<String, dynamic>> _categories = [
@@ -42,6 +49,38 @@ class _AjouterArticleState extends State<AjouterArticle> {
     {'value': 'bon', 'label': 'Bon état'},
     {'value': 'acceptable', 'label': 'État acceptable'},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    
+    // Si mode édition, pré-remplir les champs
+    if (_isEditMode) {
+      _titreController = TextEditingController(text: widget.articleAModifier.titre);
+      _descriptionController = TextEditingController(text: widget.articleAModifier.description);
+      _prixController = TextEditingController(text: widget.articleAModifier.prix.toStringAsFixed(0));
+      _localisationController = TextEditingController(text: widget.articleAModifier.ville ?? '');
+      
+      _categorieSelectionnee = widget.articleAModifier.categorie;
+      _etatSelectionne = widget.articleAModifier.etat;
+      _images = List.from(widget.articleAModifier.images);
+    } else {
+      // Mode ajout : champs vides
+      _titreController = TextEditingController();
+      _descriptionController = TextEditingController();
+      _prixController = TextEditingController();
+      _localisationController = TextEditingController();
+    }
+  }
+
+  @override
+  void dispose() {
+    _titreController.dispose();
+    _descriptionController.dispose();
+    _prixController.dispose();
+    _localisationController.dispose();
+    super.dispose();
+  }
 
   Future<void> _ajouterImage() async {
     // TODO: Implémenter image_picker
@@ -62,7 +101,7 @@ class _AjouterArticleState extends State<AjouterArticle> {
     });
   }
 
-  Future<void> _publierAnnonce() async {
+  Future<void> _soumettre() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -88,17 +127,40 @@ class _AjouterArticleState extends State<AjouterArticle> {
       // Simuler appel API
       await Future.delayed(const Duration(seconds: 2));
       
-      // TODO: Vrai appel API
-      // await apiService.creerArticle({...});
+      if (_isEditMode) {
+        // TODO: Appel API pour modifier
+        // await apiService.modifierArticle(widget.articleAModifier.id, {
+        //   'titre': _titreController.text,
+        //   'description': _descriptionController.text,
+        //   'prix': double.parse(_prixController.text),
+        //   'categorie': _categorieSelectionnee,
+        //   'etat': _etatSelectionne,
+        //   'ville': _localisationController.text,
+        //   'images': _images,
+        // });
+      } else {
+        // TODO: Appel API pour créer
+        // await apiService.creerArticle({
+        //   'titre': _titreController.text,
+        //   'description': _descriptionController.text,
+        //   'prix': double.parse(_prixController.text),
+        //   'categorie': _categorieSelectionnee,
+        //   'etat': _etatSelectionne,
+        //   'ville': _localisationController.text,
+        //   'images': _images,
+        // });
+      }
       
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
+          SnackBar(
             content: Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Annonce publiée avec succès !'),
+                const Icon(Icons.check_circle, color: Colors.white),
+                const SizedBox(width: 12),
+                Text(_isEditMode 
+                    ? 'Article modifié avec succès !' 
+                    : 'Annonce publiée avec succès !'),
               ],
             ),
             backgroundColor: Colors.green,
@@ -109,7 +171,7 @@ class _AjouterArticleState extends State<AjouterArticle> {
         Navigator.pop(context, true); // Retourner true pour rafraîchir la liste
       }
     } catch (e) {
-      _showError('Erreur lors de la publication: $e');
+      _showError('Erreur: $e');
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -142,9 +204,9 @@ class _AjouterArticleState extends State<AjouterArticle> {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back, color: Colors.black),
         ),
-        title: const Text(
-          'Créer une annonce',
-          style: TextStyle(color: Colors.black, fontSize: 18),
+        title: Text(
+          _isEditMode ? 'Modifier l\'article' : 'Créer une annonce',
+          style: const TextStyle(color: Colors.black, fontSize: 18),
         ),
         centerTitle: true,
       ),
@@ -261,6 +323,23 @@ class _AjouterArticleState extends State<AjouterArticle> {
                                       ),
                                     ),
                                   ),
+                                  // Badge "Principale" pour la première image
+                                  if (index == 0)
+                                    Positioned(
+                                      bottom: 4,
+                                      left: 4,
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                        decoration: BoxDecoration(
+                                          color: primaryColor,
+                                          borderRadius: BorderRadius.circular(4),
+                                        ),
+                                        child: const Text(
+                                          'Principale',
+                                          style: TextStyle(color: Colors.white, fontSize: 10),
+                                        ),
+                                      ),
+                                    ),
                                 ],
                               ),
                             );
@@ -336,27 +415,28 @@ class _AjouterArticleState extends State<AjouterArticle> {
                     const SizedBox(height: 20),
                     
                     // Catégorie
-                  _buildDropdown(
-                    label: 'Catégorie',
-                    hint: 'Sélectionner une catégorie',
-                    value: _categorieSelectionnee,
-                    items: _categories.map<DropdownMenuItem<String>>((cat) {
-                      return DropdownMenuItem<String>(
-                        value: cat['value'] as String,
-                        child: Row(
-                          children: [
-                            Icon(cat['icon'] as IconData, size: 20, color: Colors.grey[600]),
-                            const SizedBox(width: 12),
-                            Text(cat['label'] as String),
-                          ],
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) {
-                      setState(() => _categorieSelectionnee = value);
-                    },
-                  ),
-                  const SizedBox(height: 20),
+                    _buildDropdown(
+                      label: 'Catégorie',
+                      hint: 'Sélectionner une catégorie',
+                      value: _categorieSelectionnee,
+                      items: _categories.map<DropdownMenuItem<String>>((cat) {
+                        return DropdownMenuItem<String>(
+                          value: cat['value'] as String,
+                          child: Row(
+                            children: [
+                              Icon(cat['icon'] as IconData, size: 20, color: Colors.grey[600]),
+                              const SizedBox(width: 12),
+                              Text(cat['label'] as String),
+                            ],
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? value) {
+                        setState(() => _categorieSelectionnee = value);
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
                     
                     // État
                     _buildDropdown(
@@ -416,9 +496,9 @@ class _AjouterArticleState extends State<AjouterArticle> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _isLoading ? null : _publierAnnonce,
+              onPressed: _isLoading ? null : _soumettre,
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: primaryColor,
                 disabledBackgroundColor: Colors.grey,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -434,9 +514,11 @@ class _AjouterArticleState extends State<AjouterArticle> {
                         strokeWidth: 2,
                       ),
                     )
-                  : const Text(
-                      'Publier l\'annonce',
-                      style: TextStyle(
+                  : Text(
+                      _isEditMode 
+                          ? 'Enregistrer les modifications' 
+                          : 'Publier l\'annonce',
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -558,14 +640,5 @@ class _AjouterArticleState extends State<AjouterArticle> {
         ),
       ],
     );
-  }
-
-  @override
-  void dispose() {
-    _titreController.dispose();
-    _descriptionController.dispose();
-    _prixController.dispose();
-    _localisationController.dispose();
-    super.dispose();
   }
 }

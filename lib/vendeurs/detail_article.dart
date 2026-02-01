@@ -1,5 +1,6 @@
 // lib/vendeurs/detail_article_vendeur.dart
 import 'package:flutter/material.dart';
+import 'package:miabe_destock/vendeurs/ajouter_article.dart';
 
 class DetailArticleVendeur extends StatelessWidget {
   final dynamic article; // Utiliser la classe Article définie dans accueil_vendeur
@@ -267,22 +268,19 @@ class DetailArticleVendeur extends StatelessWidget {
     );
   }
 
-  void _showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Modifier l\'article'),
-        content: const Text(
-          'La fonctionnalité de modification sera bientôt disponible.',
+    void _showEditDialog(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => AjouterArticle(
+          articleAModifier: article, // ← Passer l'article
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
       ),
-    );
+    ).then((result) {
+      if (result == true) {
+        Navigator.pop(context, true); // Retourner au dashboard
+      }
+    });
   }
 
   void _showDeleteDialog(BuildContext context) {
